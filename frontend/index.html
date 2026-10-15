@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Gate Safety System — Live Command Center</title>
+  <meta name="description"
+    content="AI-powered gate safety, PPE detection, and attendance management system with real-time telemetry." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+  <!-- ── Sidebar Navigation ────────────────────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">SAFEGATE AI</span>
+        <span class="brand-sub">TACTICAL SAFETY OS</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="index.html" class="nav-item active" id="nav-dashboard">
+        <span class="nav-icon">
+          <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+        </span>
+        <span class="nav-label">Command Center</span>
+      </a>
+      <a href="pages/attendance.html" class="nav-item" id="nav-attendance">
+        <span class="nav-icon">
+          <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+        </span>
+        <span class="nav-label">Attendance</span>
+      </a>
+      <a href="pages/violations.html" class="nav-item" id="nav-violations">
+        <span class="nav-icon">
+          <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        </span>
+        <span class="nav-label">PPE Breaches</span>
+        <span class="nav-badge" id="violation-badge">0</span>
+      </a>
+      <a href="pages/employees.html" class="nav-item" id="nav-employees">
+        <span class="nav-icon">
+          <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="16" rx="2" />
+            <line x1="7" y1="8" x2="17" y2="8" />
+            <line x1="7" y1="12" x2="13" y2="12" />
+            <line x1="7" y1="16" x2="10" y2="16" />
+          </svg>
+        </span>
+        <span class="nav-label">Personnel Roster</span>
+      </a>
+      <a href="pages/reports.html" class="nav-item" id="nav-reports">
+        <span class="nav-icon">
+          <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+          </svg>
+        </span>
+        <span class="nav-label">Analytics & Reports</span>
+      </a>
+      <a href="pages/settings.html" class="nav-item" id="nav-settings">
+        <span class="nav-icon">
+          <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+        </span>
+        <span class="nav-label">System Config</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info" id="user-info">
+        <div class="user-avatar" id="user-avatar">A</div>
+        <div class="user-details">
+          <span class="user-name" id="user-name">Admin</span>
+          <span class="user-role" id="user-role">Administrator</span>
+        </div>
+      </div>
+      <button class="btn-logout" id="btn-logout" title="Logout">
+        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18.36 6.64a9 9 0 1 1-12.73 0" />
+          <line x1="12" y1="2" x2="12" y2="12" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── Main Content ───────────────────────────────────────────────── -->
+  <main class="main-content">
+
+    <!-- Top Header -->
+    <header class="page-header">
+      <div class="header-left">
+        <div class="page-tag">REAL-TIME SURVEILLANCE & AI ANALYTICS</div>
+        <h1 class="page-title">Live Safety Command Center</h1>
+        <p class="page-subtitle" id="current-datetime">Loading telemetry...</p>
+      </div>
+      <div class="header-right">
+        <div class="connection-status" id="conn-status">
+          <span class="status-dot disconnected"></span>
+          <span class="status-label">Connecting...</span>
+        </div>
+        <button class="btn btn-primary" id="btn-refresh" onclick="loadDashboard()">
+          <svg class="btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10" />
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+          </svg>
+          Refresh Feed
+        </button>
+      </div>
+    </header>
+
+    <!-- ── KPI Telemetry Cards ────────────────────────────────────── -->
+    <section class="kpi-grid">
+      <div class="kpi-card" id="kpi-present">
+        <div class="kpi-icon-box blue">
+          <svg class="kpi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </div>
+        <div class="kpi-data">
+          <div class="kpi-value" id="kpi-present-val">—</div>
+          <div class="kpi-label">Active Personnel On-Site</div>
+        </div>
+      </div>
+
+      <div class="kpi-card" id="kpi-contract">
+        <div class="kpi-icon-box purple">
+          <svg class="kpi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+          </svg>
+        </div>
+        <div class="kpi-data">
+          <div class="kpi-value" id="kpi-contract-val">—</div>
+          <div class="kpi-label">Contract Workforce</div>
+        </div>
+      </div>
+
+      <div class="kpi-card kpi-danger" id="kpi-violations">
+        <div class="kpi-icon-box red">
+          <svg class="kpi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        </div>
+        <div class="kpi-data">
+          <div class="kpi-value" id="kpi-violations-val">—</div>
+          <div class="kpi-label">PPE Violations Logged</div>
+        </div>
+      </div>
+
+      <div class="kpi-card kpi-success" id="kpi-compliance">
+        <div class="kpi-icon-box green">
+          <svg class="kpi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+        </div>
+        <div class="kpi-data">
+          <div class="kpi-value" id="kpi-compliance-val">—</div>
+          <div class="kpi-label">Safety Compliance Index</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── AI Model Playground & PPE Test Upload Section ───────────── -->
+    <section class="section test-playground-section" id="test-playground-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <svg class="section-svg text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          <h2 class="section-title">AI Model Playground — Photo & Video PPE Test Uploader</h2>
+        </div>
+        <div class="section-actions">
+          <span class="badge badge-accent">YOLOv8 + InsightFace Active</span>
+        </div>
+      </div>
+
+      <div class="card playground-card">
+        <div class="playground-body">
+          <!-- Dropzone area -->
+          <div class="upload-dropzone" id="upload-dropzone">
+            <input type="file" id="playground-file-input" accept="image/*,video/*" style="display:none;"
+              onchange="handlePlaygroundFileSelect(event)" />
+            <div class="dropzone-content" onclick="document.getElementById('playground-file-input').click()">
+              <div class="dropzone-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+              </div>
+              <h3 class="dropzone-title">Upload Photo or Video to Test AI Model</h3>
+              <p class="dropzone-hint">Drag & drop your media file here, or <span class="dropzone-link">browse
+                  files</span></p>
+              <div class="dropzone-tags">
+                <span class="tag">📷 JPG, PNG, WEBP</span>
+                <span class="tag">🎥 MP4, AVI, MOV, WEBM</span>
+              </div>
+            </div>
+            <!-- Processing Indicator -->
+            <div class="upload-loading" id="upload-loading" style="display:none;">
+              <div class="spinner"></div>
+              <p class="loading-text" id="loading-status-text">Analyzing frame through YOLOv8 PPE & InsightFace
+                models...</p>
+            </div>
+          </div>
+
+          <!-- Results Panel (Hidden by default) -->
+          <div class="playground-results" id="playground-results" style="display:none;">
+            <div class="results-header">
+              <div class="results-title-wrap">
+                <span class="status-badge-lg" id="res-compliance-badge">PASSED</span>
+                <h3 class="results-filename" id="res-filename">file.jpg</h3>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="resetPlayground()">
+                <svg class="btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="1 4 1 10 7 10" />
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                </svg>
+                Test Another File
+              </button>
+            </div>
+
+            <!-- Media Preview & Annotations -->
+            <div class="media-display-grid">
+              <!-- Left: Annotated Image / Video -->
+              <div class="media-preview-box">
+                <div class="box-label">AI Annotated Visual Output</div>
+                <div class="preview-viewport" id="preview-viewport">
+                  <!-- Img or Video inserted here by JS -->
+                </div>
+              </div>
+
+              <!-- Right: Detections & Safety Scorecard -->
+              <div class="scorecard-box">
+                <div class="box-label">AI Telemetry & Detections Summary</div>
+
+                <div class="mini-kpi-row">
+                  <div class="mini-kpi">
+                    <span class="mini-kpi-val" id="res-person-count">0</span>
+                    <span class="mini-kpi-lbl">Persons Detected</span>
+                  </div>
+                  <div class="mini-kpi">
+                    <span class="mini-kpi-val" id="res-violation-count">0</span>
+                    <span class="mini-kpi-lbl">PPE Violations</span>
+                  </div>
+                  <div class="mini-kpi">
+                    <span class="mini-kpi-val" id="res-match-count">0</span>
+                    <span class="mini-kpi-lbl">Face IDs Matched</span>
+                  </div>
+                </div>
+
+                <div class="detections-list-wrap">
+                  <div class="list-title">Detected Safety Items & Bounding Boxes</div>
+                  <div class="detections-chip-list" id="detections-chip-list">
+                    <!-- Chips inserted dynamically -->
+                  </div>
+                </div>
+
+                <!-- Keyframes timeline if video -->
+                <div class="video-keyframes-wrap" id="video-keyframes-wrap" style="display:none;">
+                  <div class="list-title">Sample Annotated Video Frames</div>
+                  <div class="keyframes-grid" id="keyframes-grid">
+                    <!-- Keyframes inserted dynamically -->
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Gate Status Grid ───────────────────────────────────────── -->
+    <section class="section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <svg class="section-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 7l-7 5 7 5V7z" />
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+          </svg>
+          <h2 class="section-title">Gate Telemetry & Multi-Camera Matrix</h2>
+        </div>
+        <div class="section-actions">
+          <button class="btn btn-success btn-sm" id="btn-start-all" onclick="startAllCameras()">
+            <svg class="btn-svg" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+            Activate All Streams
+          </button>
+          <button class="btn btn-danger btn-sm" id="btn-stop-all" onclick="stopAllCameras()">
+            <svg class="btn-svg" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+            </svg>
+            Stop Streams
+          </button>
+        </div>
+      </div>
+
+      <div class="gate-grid" id="gate-grid">
+        <!-- Gates rendered dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- ── Bottom Row: Violation Chart + Recent Activity ─────────── -->
+    <div class="bottom-grid">
+
+      <!-- Violation Breakdown Chart -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <svg class="card-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+            <h3 class="card-title">Breach Analytics Breakdown</h3>
+          </div>
+        </div>
+        <div class="card-body chart-container">
+          <canvas id="violation-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Recent Alerts -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <svg class="card-svg text-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            <h3 class="card-title">Live Breach Alerts</h3>
+          </div>
+          <a href="pages/violations.html" class="btn btn-ghost btn-sm">View Log &rarr;</a>
+        </div>
+        <div class="card-body">
+          <div class="alert-list" id="alert-list">
+            <div class="empty-state">No safety breaches detected today</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Attendance -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <svg class="card-svg text-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+            </svg>
+            <h3 class="card-title">Recent Gate Check-Ins</h3>
+          </div>
+          <a href="pages/attendance.html" class="btn btn-ghost btn-sm">View Roster &rarr;</a>
+        </div>
+        <div class="card-body">
+          <div class="entry-list" id="entry-list">
+            <div class="empty-state">No check-ins recorded today</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── Login Modal ─────────────────────────────────────────────── -->
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal login-modal">
+      <div class="login-header">
+        <div class="login-icon-box">
+          <svg class="login-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+        </div>
+        <h2>SAFEGATE AI</h2>
+        <p>Tactical Access & Safety Authentication</p>
+      </div>
+      <form id="login-form" onsubmit="doLogin(event)">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="login-username" class="form-input" placeholder="admin" value="admin" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" class="form-input" placeholder="••••••••" required />
+        </div>
+        <div class="form-error" id="login-error"></div>
+        <button type="submit" class="btn btn-primary btn-full" id="btn-signin">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Violation Alert Toast ───────────────────────────────────── -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+
+</html>

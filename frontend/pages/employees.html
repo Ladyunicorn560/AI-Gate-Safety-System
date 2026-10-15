@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personnel Roster — AI Gate Safety System</title>
+  <meta name="description" content="Employee management and InsightFace face biometric enrollment." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">SAFEGATE AI</span>
+        <span class="brand-sub">TACTICAL SAFETY OS</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="../index.html" class="nav-item" id="nav-dashboard">
+        <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+        <span class="nav-label">Command Center</span>
+      </a>
+      <a href="attendance.html" class="nav-item" id="nav-attendance">
+        <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <span class="nav-label">Attendance</span>
+      </a>
+      <a href="violations.html" class="nav-item" id="nav-violations">
+        <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span class="nav-label">PPE Breaches</span>
+        <span class="nav-badge" id="violation-badge">0</span>
+      </a>
+      <a href="employees.html" class="nav-item active" id="nav-employees">
+        <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="13" y2="12"/><line x1="7" y1="16" x2="10" y2="16"/></svg></span>
+        <span class="nav-label">Personnel Roster</span>
+      </a>
+      <a href="reports.html" class="nav-item" id="nav-reports">
+        <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+        <span class="nav-label">Analytics & Reports</span>
+      </a>
+      <a href="settings.html" class="nav-item" id="nav-settings">
+        <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+        <span class="nav-label">System Config</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info" id="user-info">
+        <div class="user-avatar" id="user-avatar">A</div>
+        <div class="user-details">
+          <span class="user-name" id="user-name">Admin</span>
+          <span class="user-role" id="user-role">Administrator</span>
+        </div>
+      </div>
+      <button class="btn-logout" id="btn-logout" title="Logout">
+        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="page-header">
+      <div class="header-left">
+        <div class="page-tag">BIOMETRIC EMBEDDINGS & PERSONNEL DIRECTORY</div>
+        <h1 class="page-title">Personnel Roster</h1>
+        <p class="page-subtitle">Manage worker directory and enroll facial vectors into InsightFace database.</p>
+      </div>
+      <div class="header-right">
+        <button class="btn btn-primary" onclick="openAddModal()">Add New Personnel</button>
+      </div>
+    </header>
+
+    <!-- Filters Bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label>Workforce Type</label>
+        <select id="emp-type-filter" class="form-select" onchange="loadEmployees()">
+          <option value="all">All Types</option>
+          <option value="Contract">Contract Labour</option>
+          <option value="OAS">OAS Staff</option>
+          <option value="Staff">Regular Staff</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Biometric Status</label>
+        <select id="emp-enroll-filter" class="form-select" onchange="loadEmployees()">
+          <option value="all">All Personnel</option>
+          <option value="enrolled">Enrolled Only</option>
+          <option value="pending">Pending Enrollment</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Search</label>
+        <input type="text" id="emp-search" class="form-input" placeholder="Search name or ID..." onkeyup="filterEmployeesLocally()" />
+      </div>
+    </div>
+
+    <!-- Roster Table Card -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Personnel Database</h3>
+        <span class="text-muted" id="emp-count-label">Showing 0 records</span>
+      </div>
+      <div class="card-body p-0">
+        <table class="table" id="emp-table">
+          <thead>
+            <tr>
+              <th>Emp Code</th>
+              <th>Full Name</th>
+              <th>Type</th>
+              <th>Contractor / Agency</th>
+              <th>Department</th>
+              <th>Shift</th>
+              <th>Biometric Vector</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="emp-tbody">
+            <tr><td colspan="8" class="text-center text-muted p-4">Loading personnel roster...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer" id="emp-pagination"></div>
+    </div>
+  </main>
+
+  <!-- Add/Edit Employee Modal -->
+  <div class="modal-overlay" id="emp-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="emp-modal-title">Register Personnel</h3>
+        <button class="modal-close" onclick="closeEmpModal()">&times;</button>
+      </div>
+      <form id="emp-form" onsubmit="saveEmployee(event)">
+        <input type="hidden" id="form-emp-id" />
+        <div class="form-group">
+          <label>Employee Code / Badge ID *</label>
+          <input type="text" id="form-emp-code" class="form-input" placeholder="EMP-1001" required />
+        </div>
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="form-full-name" class="form-input" placeholder="John Doe" required />
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Workforce Type</label>
+            <select id="form-emp-type" class="form-select">
+              <option value="Contract">Contract</option>
+              <option value="OAS">OAS Staff</option>
+              <option value="Staff">Staff</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Shift Code</label>
+            <select id="form-shift-code" class="form-select">
+              <option value="G">General Shift (09:00 - 17:00)</option>
+              <option value="A">Shift A (Morning 06:00 - 14:00)</option>
+              <option value="B">Shift B (Evening 14:00 - 22:00)</option>
+              <option value="C">Shift C (Night 22:00 - 06:00)</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Department</label>
+            <input type="text" id="form-dept" class="form-input" placeholder="Civil / Safety" />
+          </div>
+          <div class="form-group">
+            <label>Designation</label>
+            <input type="text" id="form-desig" class="form-input" placeholder="Technician" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="text" id="form-phone" class="form-input" placeholder="+91 9800000000" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeEmpModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Personnel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Face Enrollment Modal -->
+  <div class="modal-overlay" id="enroll-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Enroll Biometric Face Vector</h3>
+        <button class="modal-close" onclick="closeEnrollModal()">&times;</button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="text-muted text-sm mb-3">Upload a clean front-facing photo to generate a 512D face vector embedding.</p>
+        <div class="drop-zone" id="drop-zone" onclick="document.getElementById('enroll-file').click()">
+          <svg class="nav-svg text-blue mb-2" style="width:40px;height:40px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <p>Click or drag face photo here</p>
+          <input type="file" id="enroll-file" accept="image/*" style="display:none" onchange="handleFileSelect(event)" />
+        </div>
+        <div id="enroll-preview" class="mt-3"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeEnrollModal()">Cancel</button>
+        <button class="btn btn-success" id="btn-upload-enroll" onclick="uploadFaceEnrollment()" disabled>Generate Embedding</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+  <script src="../js/app.js"></script>
+  <script src="../js/employees.js"></script>
+</body>
+</html>

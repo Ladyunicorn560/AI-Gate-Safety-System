@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics & Reports — AI Gate Safety System</title>
+  <meta name="description" content="Generate custom attendance and PPE violation reports in Excel and PDF formats." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">SAFEGATE AI</span>
+        <span class="brand-sub">TACTICAL SAFETY OS</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="../index.html" class="nav-item" id="nav-dashboard">
+        <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+        <span class="nav-label">Command Center</span>
+      </a>
+      <a href="attendance.html" class="nav-item" id="nav-attendance">
+        <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <span class="nav-label">Attendance</span>
+      </a>
+      <a href="violations.html" class="nav-item" id="nav-violations">
+        <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span class="nav-label">PPE Breaches</span>
+        <span class="nav-badge" id="violation-badge">0</span>
+      </a>
+      <a href="employees.html" class="nav-item" id="nav-employees">
+        <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="13" y2="12"/><line x1="7" y1="16" x2="10" y2="16"/></svg></span>
+        <span class="nav-label">Personnel Roster</span>
+      </a>
+      <a href="reports.html" class="nav-item active" id="nav-reports">
+        <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+        <span class="nav-label">Analytics & Reports</span>
+      </a>
+      <a href="settings.html" class="nav-item" id="nav-settings">
+        <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+        <span class="nav-label">System Config</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info" id="user-info">
+        <div class="user-avatar" id="user-avatar">A</div>
+        <div class="user-details">
+          <span class="user-name" id="user-name">Admin</span>
+          <span class="user-role" id="user-role">Administrator</span>
+        </div>
+      </div>
+      <button class="btn-logout" id="btn-logout" title="Logout">
+        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="page-header">
+      <div class="header-left">
+        <div class="page-tag">SAFETY AUDIT EXPORT ENGINE</div>
+        <h1 class="page-title">Analytics & Reports Generator</h1>
+        <p class="page-subtitle">Configure custom parameters to export daily, weekly, or monthly safety audit reports.</p>
+      </div>
+    </header>
+
+    <div class="grid-2">
+      <!-- Report Control Panel -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Configure Report Criteria</h3>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label>Report Type</label>
+            <select id="rpt-type" class="form-select">
+              <option value="Attendance">Attendance Summary Log</option>
+              <option value="Violations">PPE Safety Breach Audit</option>
+              <option value="Executive">Executive Safety Compliance Summary</option>
+            </select>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Start Date</label>
+              <input type="date" id="rpt-start" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label>End Date</label>
+              <input type="date" id="rpt-end" class="form-input" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Select Gate Filter</label>
+            <select id="rpt-gate" class="form-select">
+              <option value="all">All Gates (1-4)</option>
+              <option value="1">Main Gate-1</option>
+              <option value="2">Main Gate-2</option>
+              <option value="3">Main Gate-3</option>
+              <option value="4">Main Gate-4</option>
+            </select>
+          </div>
+          <div class="form-group mt-4">
+            <button class="btn btn-primary btn-full mb-2" onclick="previewReport()">Generate Report Data</button>
+            <div class="grid-2">
+              <button class="btn btn-secondary" onclick="downloadExcel()">Download Excel (.xlsx)</button>
+              <button class="btn btn-secondary" onclick="downloadPDF()">Download PDF (.pdf)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Export Templates -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Quick Preset Templates</h3>
+        </div>
+        <div class="card-body">
+          <div class="preset-list">
+            <button class="preset-card" onclick="quickReport('today')">
+              <div class="preset-icon text-cyan"><svg class="kpi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+              <div class="preset-details">
+                <div class="preset-title">Today's Daily Safety Log</div>
+                <div class="preset-desc">Full check-ins and PPE breach events logged today.</div>
+              </div>
+            </button>
+            <button class="preset-card mt-3" onclick="quickReport('week')">
+              <div class="preset-icon text-blue"><svg class="kpi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+              <div class="preset-details">
+                <div class="preset-title">Weekly Compliance Audit</div>
+                <div class="preset-desc">7-day safety trend breakdown for plant management.</div>
+              </div>
+            </button>
+            <button class="preset-card mt-3" onclick="quickReport('month')">
+              <div class="preset-icon text-purple"><svg class="kpi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <div class="preset-details">
+                <div class="preset-title">Monthly Executive Report</div>
+                <div class="preset-desc">Full monthly site compliance metrics and contractor breakdown.</div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview Section -->
+    <div class="card mt-4">
+      <div class="card-header">
+        <h3 class="card-title">Report Data Preview</h3>
+        <span class="text-muted" id="preview-count">Click preview to load data</span>
+      </div>
+      <div class="card-body p-0">
+        <div id="preview-container" class="p-4 text-center text-muted">Select criteria and click "Generate Report Data" to preview records.</div>
+      </div>
+    </div>
+  </main>
+
+  <div class="toast-container" id="toast-container"></div>
+  <script src="../js/app.js"></script>
+  <script src="../js/reports.js"></script>
+</body>
+</html>
